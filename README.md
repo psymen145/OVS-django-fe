@@ -16,7 +16,7 @@ The projects tab will show all projects that ever existed.
 
 There are several filtering options and sorting options. The sorting options are located next to each column. The filter options are in the middle. You change what you want to filter by. The dropdown menu will change based on what you want to filter by.
 
-![Filter Change Screenshot](https://github.com/psymen145/OVS-django-fe/blob/master/filterchange.JPG){:height="50%" width="50%"}
+![Filter Change Screenshot](https://github.com/psymen145/OVS-django-fe/blob/master/filterchange.JPG | width=50}
 
 Each row in the project table can be clicked anywhere on the row. This will bring you to a view that displays information specific to that project.
 
