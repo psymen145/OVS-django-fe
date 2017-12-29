@@ -12,11 +12,11 @@ The front end is broken up into different sections. The dashboard is the homepag
 
 The projects tab will show all projects that ever existed. 
 
-![Project Screenshot](https://github.com/psymen145/OVS-django-fe/blob/master/project.JPG)<!-- .element height="50%" width="50%" -->
+![Project Screenshot](https://github.com/psymen145/OVS-django-fe/blob/master/project.JPG)
 
 There are several filtering options and sorting options. The sorting options are located next to each column. The filter options are in the middle. You change what you want to filter by. The dropdown menu will change based on what you want to filter by.
 
-![Project Screenshot](https://github.com/psymen145/OVS-django-fe/blob/master/individualproj.JPG)
+![Project Screenshot](https://github.com/psymen145/OVS-django-fe/blob/master/filterchange.JPG)
 
 Each row in the project table can be clicked anywhere on the row. This will bring you to a view that displays information specific to that project.
 
