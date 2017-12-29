@@ -25,3 +25,7 @@ Each row in the project table can be clicked anywhere on the row. This will brin
 If the user is logged on and has the correct privileges, he/she can edit the individual project information in this screen. Notice the pencil icons next to boxes. This will change the html to inputs that allows changes to the form. Ajax calls will be made and subsequently make changes in the backend.
 
 Also, there are tabs that show other information for that individual project
+
+## License
+
+The source code is released under the [MIT License](https://github.com/sibtc/django-beginners-guide/blob/master/LICENSE).
