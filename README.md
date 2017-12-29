@@ -1,6 +1,6 @@
 # Front end for OVS Data Use unit
 
-An intranet site for OVS Data Use unit. This is used to manage projects/data requests for the data use officer. This is currently in development and awaiting news for production environment.
+An responsive intranet site for OVS Data Use unit. This is used to manage projects/data requests for the data use officer. This is currently in development and awaiting news for production environment.
 
 Currently implemented with a legacy SQL Server 
 
@@ -27,6 +27,8 @@ Each row in the project table can be clicked anywhere on the row. This will brin
 If the user is logged on and has the correct privileges, he/she can edit the individual project information in this screen. Notice the pencil icons next to boxes. This will change the html to inputs that allows changes to the form. Ajax calls will be made and subsequently make changes in the backend.
 
 Also, there are tabs that show other information for that individual project
+
+The User tab is similar to the project tab, a table showing all users, which links to specific pages for each user.
 
 ## License
 
