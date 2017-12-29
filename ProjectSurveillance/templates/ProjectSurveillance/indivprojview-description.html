@@ -1,0 +1,110 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-8">
+        <div class="card mb-sm-4 card-border">
+            {% if user.is_authenticated %}
+            <div class="card-header">
+                <span id="edit-icon-1" class="icons fa fa-pencil"></span>
+                <span id="save-icon-1" class="icons hidden fa fa-check"></span>
+            </div>
+            {% endif %}
+            <div class="card-body" id="general-info">
+                <div class="form-group row">
+                    <label for="project-id" class="col-form-label col-xs-2 col-sm-3"> <b>Project ID:</b> </label>
+                    <div class="col-xs-10 col-sm-9"> 
+                        <input type="text" readonly class="form-control-plaintext" id="alternate-id" value="{{ project.alternateid|default_if_none:''}}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phase-id" class="col-form-label col-xs-2 col-sm-3"> <b>Phase:</b> </label>
+                    <div class="col-xs-10 col-sm-9">
+                        <input type="text" readonly class="form-control-plaintext" id="phase-id" value="{{ project.phaseid.phase }}">
+                        <select class="form-control disappear hidden">
+                            <option selected> {{ project.phaseid.phase }}</option>
+                            {% for p in phases %}
+                                <option> {{ p.phase }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row general-info-row" id="project-type-row">
+                    <div class="col-xs-2 col-sm-3"> <b>Project Type:</b></div>
+                    {% for ot in orgtypes %}                        
+                    <div class="col-xs-10 col-sm-9 ml-auto">
+                        {{ ot|title }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="row general-info-row">
+                    <div class="col-xs-2 col-sm-3"> <b>Organization:</b> </div>
+                    {% if orgs|length > 0 %}
+                        {% for org in orgs %}
+                        <div class="col-xs-10 col-sm-9 ml-auto">
+                            {{ org.orgname }}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-xs-10 col-sm-9 ml-auto"></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-4">
+        <div class="card mb-sm-4 card-border">
+            {% if user.is_authenticated %}
+            <div class="card-header">
+                <span id="edit-icon-2" class="icons fa fa-pencil"></span>
+                <span id="save-icon-2" class="icons hidden fa fa-check"></span>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <form class="edit-forms" id="box-2-form">
+                    <div class="form-group row">
+                        <label for="" class="col-xs-6 col-sm-6 col-lg-5 col-form-label"> <b>Start Date:</b> </label>
+                        <div class="col-xs-6 col-sm-6 col-lg-7">
+                            <input type="text" id="start-date" readonly class="form-control-plaintext" value="{{ start.dateofevent }}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-xs-6 col-sm-6 col-lg-5 col-form-label"> <b>End Date:</b> </label>
+                        <div class="col-xs-6 col-sm-6 col-lg-7">
+                            <input type="text" id="end-date" readonly class="form-control-plaintext" value="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+        <div class="card mb-sm-4 card-border">
+            {% if user.is_authenticated %}
+            <div class="card-header">
+                <span id="edit-icon-3" class="icons fa fa-pencil"></span>
+                <span id="save-icon-3" class="icons hidden fa fa-check"></span>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <form class="edit-forms">
+                    <div class="form-group row">
+                        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-2 col-form-label"> <b>Description:</b> </label>
+                        <div class="col-xs-6 col-sm-8 col-md-9 col-lg-10">
+                            <div id="description"> {{ descrip.note }} </div>
+                            <textarea id="description-form" class="form-control disappear hidden" rows="6"> {{ descrip.note }} </textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xs-6 col-sm-4 col-md-3 col-lg-2 col-form-label"> <b>Variables:</b> </label>
+                        <div class="col-xs-6 col-sm-8 col-md-9 col-lg-10">
+                            <div id="variables"> </div>
+                            <textarea id="variables-form" class="form-control disappear hidden" rows="6"> </textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

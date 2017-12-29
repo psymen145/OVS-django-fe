@@ -1,0 +1,73 @@
+{% extends 'ProjectSurveillance/base.html' %}
+
+{% load staticfiles %}
+
+{% block 'javascript' %}
+    <script type="text/javascript">
+        $("#id_username").change(function () {
+            var username = $(this).val();
+
+            $.ajax({
+                url: '/signup/validate_username/',
+                data: {
+                    'username': username
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.is_taken) {
+                        $('#error-modal').modal('show');
+                    }
+                }
+            });
+
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group row">
+            <label for="id_{{ field.html_name }}" class="col-sm-2 col-form-label"> {{ field.label }} </label>
+            <div class="col-sm-6">
+                {% if field.html_name == "password1" or field.html_name == "password2" %}
+                <input type="password" name="{{ field.html_name }}" id="id_{{ field.html_name }}" class="form-control"/>
+                {% elif field.html_name == "email" %}
+                <input type="email" name="{{ field.html_name }}" id="id_{{ field.html_name }}" class="form-control"/>
+                {% else %}
+                <input type="text" name="{{ field.html_name }}" id="id_{{ field.html_name }}" class="form-control"/>
+                {% endif %}
+            </div>
+
+            <div class="col-sm-4">
+            {% for error in field.errors %}
+              <p style="color: red; font-size: 0.75rem">{{ error | safe }}</p>
+            {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-md btn-primary btn-block" style="letter-spacing: 2px;">SIGN UP</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>    
+                </div>
+                <div class="modal-body">
+                    <p>A user with this username already exists</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

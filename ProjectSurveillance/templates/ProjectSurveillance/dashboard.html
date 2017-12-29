@@ -1,0 +1,416 @@
+{% extends 'ProjectSurveillance/base.html' %}
+{% load staticfiles %}
+
+{% block 'extra_css' %} 
+    <link rel="stylesheet" href="{% static 'ProjectSurveillance/css/dashboard.css' %}" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
+
+{% block 'javascript' %}
+    <script type="text/javascript" src="{% static 'ProjectSurveillance/js/dashboard.js' %}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+{% endblock %}
+
+{% block 'nav_dashboard' %} active {% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="row" id="dashboard-header">
+    <div class="col-xs-3 col-sm-4 col-md-4 dashboard-header-row-1">
+        <input type="text" class="datepicker form-control form-control-sm" id="from-date" placeholder="From Date">
+    </div>
+    <div class="col-xs-3 col-sm-4 col-md-4 dashboard-header-row-1">
+        <input type="text" class="datepicker form-control form-control-sm" id="to-date" placeholder="To Date">
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 dashboard-header-row-1">
+        <button type="submit" class="btn btn-primary btn-sm" id="date-button">Submit</button>
+    </div>
+</div>
+
+<!--
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stats" id="tile1">
+        <div class="card" id="newUser" data-toggle="modal" data-target="#modalpane" data-backdrop="static">
+            <div class="card-body">
+                <div class="card-body-header">
+                    <span class="fa fa-user"></span>
+                    Total Users
+                </div>
+                <div class="card-body-text">
+                    {{ total_users }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stats" id="tile2">
+        <div class="card" id="newProj" data-toggle="modal" data-target="#modalpane" data-backdrop="static">
+            <div class="card-body">
+                <div class="card-body-header">
+                    <span class="fa fa-folder-open"></span>
+                    Total Projects
+                </div>
+                <div class="card-body-text">
+                    {{ total_projects }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stats" id="tile3">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-body-header">
+                    <span class="fa fa-file"></span>
+                    Open Projects
+                </div>
+                <div class="card-body-text">
+                    {{ total_open_projects }} 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stats" id="tile4">
+        <div class="card" id="newOrg" data-toggle="modal" data-target="#modalpane" data-backdrop="static">
+            <div class="card-body">
+                <div class="card-body-header">
+                    <span class="fa fa-users"></span>
+                    Organizations
+                </div>
+                <div class="card-body-text">
+                    {{ total_orgs }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<div id="dash-view-pane">
+    <div class="row">
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> Pre Project Phase </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="1">
+                        {% for p in preproj %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> New Project Submission </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="2">
+                        {% for p in newsub %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}    
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> New Project Logging </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="3">
+                        {% for p in newlogging %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> Approvals Review </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="4">
+                        {% for p in appreview %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> Request Revisions to App </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="5">
+                        {% for p in revision %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> DUA Draft and Review </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="6">
+                        {% for p in duadraftrev %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> DUA Review and Signature by Requester </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="7">
+                        {% for p in reqduarev %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> Approvals Closeout </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="8">
+                        {% for p in appclose %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> Data Request Processing </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="9">
+                        {% for p in datareqproc %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> Data Secured Transfer </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="10">
+                        {% for p in datasec %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-3 phase">
+            <div class="card">
+                <div class="card-header"> Data Closeout </div>
+                <div class="card-body">
+                    <ul class="list-group connectedSortable droppable" id="11">
+                        {% for p in dataclose %}
+                            <li class='clickable-row list-group-item ui-state-default' data-href='/dashboard/project/{{p.projectid}}' data-id='{{p.projectid}}'>
+                                {{ p.projname }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="row">
+    <div class="col-xs-6 col-sm-4">
+        <div class="card w-100 mb-4 card-border">
+            <div class="card-header"><b> New Project Submission </b> 
+                <div class="float-right">
+                    <span class="icons fa fa-navicon" data-toggle="collapse" data-target="#New-Proj-Sub"></span>
+                </div>
+            </div>
+            <div class="card-body collapse show phases" id="New-Proj-Sub">
+                <table class="table table-hover table-sm">
+                    <tbody>
+                    {% for p in newsub %}
+                        <tr class='clickable-row' id="1-{{ p.projectcatid }}" data-href='/dashboard/project/{{p.projectid}}' draggable="true" ondragstart="drag(event)" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <td> {{ p.projname }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4">
+        <div class="card w-100 mb-4 card-border">
+            <div class="card-header"><b> New Project Logging </b>
+                <div class="float-right">
+                    <span class="icons fa fa-navicon" data-toggle="collapse" data-target="#New-Proj-Log"></span>
+                </div>
+            </div>
+            <div class="card-body collapse show phases" id="New-Proj-Log">
+                <table class="table table-hover table-sm">
+                    <tbody>
+                    {% for p in newlogging %}
+                        <tr class='clickable-row' id="2-{{ p.projectcatid }}" data-href='/dashboard/project/{{p.projectid}}' draggable="true" ondragstart="drag(event)" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <td> {{ p.projname }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4">
+        <div class="card w-100 mb-4 card-border">
+            <div class="card-header"><b> Approvals Review </b>
+                <div class="float-right">
+                    <span class="icons fa fa-navicon" data-toggle="collapse" data-target="#app-review"></span>
+                </div>
+            </div>
+            <div class="card-body collapse show phases" id="app-review">
+                <table class="table table-hover table-sm">
+                    <tbody>
+                    {% for p in appreview %}
+                        <tr class='clickable-row' id="3-{{ p.projectcatid }}" data-href='/dashboard/project/{{p.projectid}}' draggable="true" ondragstart="drag(event)" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <td> {{ p.projname }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4">
+        <div class="card w-100 mb-4 card-border">
+            <div class="card-header"><b> Request Revisions to App </b>
+                <div class="float-right">
+                    <span class="icons fa fa-navicon" data-toggle="collapse" data-target="#rev-app"></span>
+                </div>
+            </div>
+            <div class="card-body collapse show phases" id="rev-app">
+                <table class="table table-hover table-sm">
+                    <tbody>
+                    {% for p in revision %}
+                        <tr class='clickable-row' id="4-{{ p.projectcatid }}" data-href='/dashboard/project/{{p.projectid}}' draggable="true" ondragstart="drag(event)" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <td> {{ p.projname }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4">
+        <div class="card w-100 mb-4 card-border">
+            <div class="card-header"><b> DUA Draft and Review </b>
+                <div class="float-right">
+                    <span class="icons fa fa-navicon" data-toggle="collapse" data-target="#dua-draft-rev"></span>
+                </div>
+            </div>
+            <div class="card-body collapse show phases" id="dua-draft-rev">
+                <table class="table table-hover table-sm">
+                    <tbody>
+                    {% for p in duadraftrev %}
+                        <tr class='clickable-row' id="5-{{ p.projectcatid }}" data-href='/dashboard/project/{{p.projectid}}' draggable="true" ondragstart="drag(event)" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <td> {{ p.projname }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4">
+        <div class="card w-100 mb-4 card-border">
+            <div class="card-header"><b> DUA Review and Signature by Requester </b>
+                <div class="float-right">
+                    <span class="icons fa fa-navicon" data-toggle="collapse" data-target="#req-dua-rev"></span>
+                </div>
+            </div>
+            <div class="card-body collapse show phases" id="req-dua-rev">
+                <table class="table table-hover table-sm">
+                    <tbody>
+                    {% for p in reqduarev %}
+                        <tr class='clickable-row' id="6-{{ p.projectcatid }}" data-href='/dashboard/project/{{p.projectid}}' draggable="true" ondragstart="drag(event)" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <td> {{ p.projname }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="modal fade" id="modalpane" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="container">
+                <form action="#" method="POST">
+                    <div class="modal-header">
+                        <h5></h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <span id="message">Submitted</span>
+                        <button type="button" class="btn btn-secondary" id="modalclose" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<h3> <b> {{ statement }}</b></h3>
+{% endif %}
+
+{% endblock %}

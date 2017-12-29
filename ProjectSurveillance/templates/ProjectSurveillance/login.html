@@ -1,0 +1,67 @@
+{% extends 'ProjectSurveillance/base.html' %}
+
+{% load staticfiles %}
+
+{% block 'extra_css' %} 
+    <link rel="stylesheet" href="{% static 'ProjectSurveillance/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+    	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
+    		<img class="img-fluid" src="{% static 'ProjectSurveillance/img/NYClogo.png' %}">
+    	</div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-5"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-2 col-sm-3 col-md-4 col-lg-4"></div>
+    	<div class="col-xs-8 col-sm-6 col-md-4 col-lg-3">
+    		{% if form.errors %}
+			<p>Your username and password didn't match. Please try again.</p>
+			{% endif %}
+
+			{% if next %}
+				{% if user.is_authenticated %}
+				<p>Your account doesn't have access to this page. To proceed,
+				please login with an account that has access.</p>
+				{% else %}
+				<p>Please login to see this page.</p>
+				{% endif %}
+			{% endif %}
+		    <form method="post"  action="{% url 'login' %}">
+		    	{% csrf_token %}
+		    	<div class="form-group row">
+                    <label for="{{ form.username.id_for_label }}" class="col-xs-12 col-sm-12 col-form-label"> {{ form.username.label }} </label>
+                    <div class="col-xs-12 col-sm-12">
+                        <input type="text" name="username" class="form-control" id="{{ form.username.id_for_label }}" />
+                    </div>
+				</div>
+                <div class="form-group row">
+                    <label for="{{ form.password.id_for_label }}" class="col-xs-12 col-sm-12 col-form-label"> {{ form.password.label }} </label>
+                    <div class="col-xs-12 col-sm-12">
+                        <input type="password" name="password" class="form-control" id="{{ form.password.id_for_label }}" />
+                    </div>
+				</div>
+			    <div class="form-group">
+			        <button class="btn btn-md btn-primary btn-block" type="submit" value= "login">SIGN IN</button>
+			        	<input type="hidden" name="next" value="{{ next }}" />
+			    </div>
+			</form>
+		</div>
+        <div class="col-xs-2 col-sm-3 col-md-4 col-lg-5"></div>
+	</div>
+
+    <div class="row">
+        <div class="col-xs-2 col-sm-3 col-md-4 col-lg-4"></div>
+        <div class="col-xs-8 col-sm-6 col-md-4 col-lg-3">
+            <a class="btn btn-md btn-primary btn-block disabled" href="/signup/">
+                CREATE AN ACCOUNT
+            </a>
+        </div>
+        <div class="col-xs-2 col-sm-3 col-md-4 col-lg-5"></div>
+    </div>
+
+{% endblock %}
+

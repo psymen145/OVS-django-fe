@@ -1,0 +1,89 @@
+{% extends 'ProjectSurveillance/base.html' %}
+
+{% load staticfiles %}
+
+{% block 'nav_users' %} active {% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-4 col-lg-4" id="pagination-bar">
+        <nav aria-label="pagination">
+            <ul class="pagination pagination-sm">
+            {% if users.has_previous %}
+                <li class="page-item" id="previous">
+                    <a class="page-link" data-id="{{ users.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled" id="previous"><span class="page-link" data-id="0" >&laquo;</span></li>
+            {% endif %}
+
+            {% for i in page_range %}
+                {% if users.number == i %}
+                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                    <li class="page-item"> <a class="page-link" data-id="{{i}}"> {{ i }}</a> </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if users.has_next %}
+                <li class="page-item" id="next">
+                    <a class="page-link" data-id="{{ users.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled" id="next"><span class="page-link" data-id="0" >&raquo;</span></li>
+            {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <div class="col-xs-12 col-sm-4"></div>
+
+    <div class="col-xs-12 col-sm-4 proj-inputs">
+        <form class="input-group" method="get" id="searchform" action=".">
+          <input type="text" class="form-control form-control-sm" placeholder="Search by name/email" id="searchbox" name="searchbox">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+          </span>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="card w-100 mb-4">
+            <table class="table table-hover">
+                <thead class="thead-default">
+                    <tr>
+                        <th> ID <span id="id-sort-icon" class="user-sort-icon fa fa-caret-down"></span> </th>
+                        <th> First Name <span id="fname-sort-icon" class="user-sort-icon fa fa-caret-down"></span> </th>
+                        <th> Last Name <span id="lname-sort-icon" class="user-sort-icon fa fa-caret-down"></span> </th>
+                        <th> Email <span id="email-sort-icon" class="user-sort-icon fa fa-caret-down"></span> </th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    {% for user in users %}
+                    <tr class='clickable-row' data-href='{% url 'userdetails' user.userid %}'>
+                        <td> {{ user.userid }} </td>
+                        <td> {{ user.fname }} </td>
+                        <td> {{ user.lname }} </td>
+                        <td> {{ user.useremail }} </td>
+                    </tr>
+                    {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block 'javascript' %}
+ 
+<script type="text/javascript" src="{% static 'ProjectSurveillance/js/userview.js' %}"></script>
+
+{% endblock %}

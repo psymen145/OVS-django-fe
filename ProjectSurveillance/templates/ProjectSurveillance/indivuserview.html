@@ -1,0 +1,221 @@
+{% extends "ProjectSurveillance/base.html" %}
+{% load staticfiles %}
+
+{% block 'extra_css' %}
+    <link rel="stylesheet" href="{% static 'ProjectSurveillance/css/indivuser.css' %}" />
+{% endblock %}
+
+{% block 'javascript' %}
+    <script type="text/javascript" src="{% static 'ProjectSurveillance/js/indivuserview.js' %}"></script>
+{% endblock %}
+
+{% block 'nav_users' %} active {% endblock %}
+
+{% block content %}
+<div class="row" id="indiv-header">
+    <div class="col-xs-6 col-sm-8 col-md-9 header-row-1">
+        <span id="indiv-header-title"> <b> {{ userdetail.fname }} {{ userdetail.lname }} </b> </span>
+        <div id="database-id"> USER ID: {{ userdetail.userid }}</div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4 col-md-3 header-row-1">
+        {% if user.is_authenticated %}
+        <button type="button" class="btn btn-sm indiv-buttons"> <span class="fa fa-pencil"></span></button>
+        <button type="button" class="btn btn-sm indiv-buttons"> <span class="fa fa-trash"></span></button>
+        {% endif %}
+    </div>
+</div>
+
+<div id="indiv-view-pane">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 info">
+            <div class="card mb-sm-4 card-border">
+                {% if user.is_authenticated %}
+                <div class="card-header">
+                    <span id="edit-icon-1" class="icons fa fa-pencil"></span>
+                    <span id="save-icon-1" class="icons hidden fa fa-check"></span>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <form id="info-form" class="edit-forms">
+                        <div class="form-group row">
+                            <label for="staticEmail" class="col-xs-3 col-sm-4 col-form-label"> <b>Email:</b> </label>
+                            <div class="col-xs-9 col-sm-8" data-toggle="popover" data-placement="right" data-content="Please put a valid email" data-trigger="manual" data-container=".edit-forms">
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{ userdetail.useremail|default_if_none:'' }}" pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="staticPhone" class="col-xs-3 col-sm-4 col-form-label"> <b>Phone:</b> </label>
+                            <div class="col-xs-9 col-sm-8" data-toggle="popover" data-placement="right" data-content="Please put in format (123-456-7890)" data-trigger="manual" data-container=".edit-forms">
+                                <input type="text" readonly class="form-control-plaintext" id="staticPhone" value="{{ userdetail.phone|default_if_none:"" }}" pattern="([0-9]{3}-[0-9]{3}-[0-9]{4})?">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-orgs" class="col-xs-3 col-sm-4 col-form-label"> <b>Organization:</b> </label>
+                            <div class="col-xs-9 col-sm-8 ml-auto">
+                                <input type="text" readonly class="form-control-plaintext" id="user-org" value="{{ org.orgname }}">
+                                <select class="form-control disappear hidden" id="user-org-dropdown"></select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-5 info">
+            <div class="card mb-sm-4 card-border">
+                {% if user.is_authenticated %}
+                <div class="card-header">
+                    <span id="edit-icon-2" class="icons fa fa-pencil"></span>
+                    <span id="save-icon-2" class="icons hidden fa fa-check"></span>
+                </div>
+                {% endif %}
+                <div class="card-body" id="bvs-agree">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            <span><b> BVS Confidentiality Agreement Requested: </b></span>
+                        </div>
+                        {% if request|length > 0 %}
+                            {% for r in requested %}
+                            <div class="col-xs-12 col-sm-12" data-toggle="popover" data-placement="right" data-content="Invalid format" data-trigger="manual" data-container="#bvs-agree">
+                                <input type="text" readonly class="form-control-plaintext requested" value = "{{ r.dateofevent }}" pattern="^([a-zA-Z]{3,9}|\d{2})([ ]|([-.][ ]*))(\d{1,2})([ ]|[-,][ ]*)(\d{4})$">
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="col-xs-12 col-sm-12" data-toggle="popover" data-placement="right" data-content="Invalid format" data-trigger="manual" data-container="#bvs-agree">
+                            <input type="text" readonly class="form-control-plaintext requested" value = "" pattern="^([a-zA-Z]{3,9}|\d{2})([ ]|([-.][ ]*))(\d{1,2})([ ]|[-,][ ]*)(\d{4})$">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            <span><b> BVS Confidentiality Agreement Signed: </b></span>
+                        </div>
+                        {% if signed|length > 0 %}
+                            {% for s in signed %}
+                            <div class="col-xs-12 col-sm-12" data-toggle="popover" data-placement="right" data-content="Invalid format" data-trigger="manual" data-container="#bvs-agree">
+                                <input type="text" readonly class="form-control-plaintext signed" value = "{{ s.dateofevent }}" pattern="^([a-zA-Z]{3,9}|\d{2})([ ]|([-.][ ]*))(\d{1,2})([ ]|[-,][ ]*)(\d{4})$">
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="col-xs-12 col-sm-12" data-toggle="popover" data-placement="right" data-content="Invalid format" data-trigger="manual" data-container="#bvs-agree">
+                            <input type="text" readonly class="form-control-plaintext signed" value = "" pattern="^([a-zA-Z]{3,9}|\d{2})([ ]|([-.][ ]*))(\d{1,2})([ ]|[-,][ ]*)(\d{4})$">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12 info">
+            <div class="card mb-sm-4 card-border">
+                <div class="card-header"><b>Projects</b>
+                    <div class="float-right">
+                        <span class="icons fa fa-navicon" data-toggle="collapse" data-target="#open-table"></span>
+                    </div>
+                </div>
+                <div class="collapse show" id="open-table">
+                    <table class="table table-hover">
+                        <thead class="thead-default">
+                            <tr>
+                                <th>ID</th>
+                                <th>Project Name</th>
+                                <th>Project Active</th>
+                                <th>Associated with project</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in projects %}
+                            <tr class='clickable-row' data-href='/dashboard/project/{{p.0}}'>
+                                <td> {{ p.0 }} </td>
+                                <td> {{ p.1 }} </td>
+                                {% if p.2 %}
+                                    <td class="fa-td">
+                                        <i class="fa fa-times-circle fa-lg" style="color:tomato;"></i>
+                                    </td>
+                                {% else %}
+                                    <td class="fa-td">
+                                        <i class="fa fa-check-circle fa-lg" style="color:#117888;"></i>
+                                    </td>
+                                {% endif %}
+                                <td class="user-assoc-checkbox" data-id="{{ p.0 }}">
+                                    {% if p.3 %}
+                                    <input type="checkbox">
+                                    {% else %}
+                                    <input type="checkbox" checked>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12 info">
+            <div class="card mb-sm-4 card-border">
+                <div class="card-header"><b>Drive Access</b>
+                    <div class="float-right">
+                        <span class="icons fa fa-navicon" data-toggle="collapse" data-target="#drive-table"></span>
+                    </div>
+                </div>
+                <div class="collapse show" id="drive-table">
+                    <table class="table">
+                        <thead class="thead-default">
+                            <tr>
+                                <th>Location</th>
+                                <th>Permission</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in drive_access %}
+                            <tr>
+                                <td>{{ d.0 }}</td>
+                                {% if d.1|length == 6 %}
+                                <td>Full Control</td>
+                                {% elif d.1|length == 5 %}
+                                <td>Read/Write</td>
+                                {% elif d.1|length == 3 %}
+                                <td>Read</td>
+                                {% else %}
+                                <td>Unknown</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userviewmodalpane" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="container">
+                <form action="#" method="POST">
+                    <div class="modal-header">
+                        <span>Which projects do you want to unlink?</span>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="modalclose" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="userviewsubmit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

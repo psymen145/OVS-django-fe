@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12 info ">
+        <div class="card mb-sm-4 card-border">
+            <div class="card-header"><b>Activity</b> 
+                {% if user.is_authenticated %}
+                <div class="float-right" id="add-act">
+                    <span class="icons fa fa-plus"></span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="collapse show" id="activity-table">
+                <table class="table" id="activity">
+                <thead class="thead-default">
+                    <tr>
+                        <th id="date"> Date </th>
+                        <th> Note </th>
+                        <th id="act-buttons"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pa in proj_activity %}
+                    <tr data-id="{{ pa.activityid }}">
+                        <td> {{ pa.datelogged|date:"m/d/y"}} </td>
+                        <td> {{ pa.note }} </td>
+                        <td> 
+                            <button type="button" class="btn btn-sm btn-outline-success act-edit" data-id="edit-{{ pa.activityid }}"><span class="fa fa-pencil"></span> Edit</button>
+                            <button type="button" class="btn btn-sm btn-outline-success hidden disappear act-save" data-id="save-{{ pa.activityid }}"><span class="fa fa-check"></span> Save</button>
+                            <button type="button" class="btn btn-sm btn-outline-info hidden disappear act-undo" data-id="cancel-{{ pa.activityid }}"><span class="fa fa-undo"></span> Undo</button>  
+                            <button type="button" class="btn btn-sm btn-outline-danger hidden disappear act-arc" data-id="cancel-{{ pa.activityid }}"><span class="fa fa-archive"></span> Archive</button> 
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

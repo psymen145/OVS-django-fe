@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12 info ">
+        <div class="card mb-sm-4 card-border">
+            <div class="card-header"><b>Users</b> 
+                {% if user.is_authenticated %}
+                <div class="float-right">
+                    <span class="icons fa fa-plus"></span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="collapse show" id="user-table">
+                <table class="table table-hover">
+                <thead class="thead-default">
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for userproj in userprojs %}
+                    <tr class='clickable-row' data-href='/dashboard/user/{{userproj.userid}}'>
+                        <td> {{ userproj.userid }} </td>
+                        <td> {{ userproj.fname }} </td>
+                        <td> {{ userproj.lname }} </td>
+                        <td> {{ userproj.useremail }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

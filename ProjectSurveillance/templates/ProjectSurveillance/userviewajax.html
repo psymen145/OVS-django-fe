@@ -1,0 +1,8 @@
+{% for user in users %}
+<tr class='clickable-row' data-href='/dashboard/user/{{user.userid}}'>
+    <td> {{ user.userid }} </td>
+    <td> {{ user.fname }} </td>
+    <td> {{ user.lname }} </td>
+    <td> {{ user.useremail }} </td>
+</tr>
+{% endfor %} 

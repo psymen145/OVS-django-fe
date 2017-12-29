@@ -1,0 +1,103 @@
+{% extends 'ProjectSurveillance/base.html' %}
+
+{% load staticfiles %}
+
+{% block 'nav_project' %} active {% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-3" id="pagination-bar">
+        <nav aria-label="pagination">
+            <ul class="pagination pagination-sm">
+            {% if projects.has_previous %}
+                <li class="page-item" id="previous">
+                    <a class="page-link" data-id="{{ projects.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled" id="previous"><span class="page-link" data-id="0">&laquo;</span></li>
+            {% endif %}
+
+            {% for i in page_range %}
+                {% if projects.number == i %}
+                    <li class="page-item active"><span class="page-link" data-id="-1">{{ i }}</span></li>
+                {% else %}
+                    <li class="page-item"> <a class="page-link" data-id="{{i}}"> {{ i }}</a> </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if projects.has_next %}
+                <li class="page-item" id="next">
+                    <a class="page-link" data-id="{{ projects.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled" id="next"><span class="page-link" data-id="0" >&raquo;</span></li>
+            {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-5 proj-inputs" id="filtersection">
+        <form class="input-group" method="get" id="filterform" action=".">
+            <select type="text" class="form-control form-control-sm" id="filterbox" name="{{ filtertype }}">
+                <option selected disabled hidden> {{ chosen }} </option>
+                {% for option in optionlist %}
+                <option> {{ option }} </option>
+                {% endfor %}
+            </select>
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary btn-sm" id="filter-button" data-id="{{ filtertype }}"> {{ filtername }} </button>
+                <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"> </button>
+                <div class="dropdown-menu dropdown-menu-right" id="filterdiv">
+                    <a class="dropdown-item proj-filter-item" data-id="org" href="?filtertype=org">Organization</a>
+                    <a class="dropdown-item proj-filter-item" data-id="type">Project Type</a>
+                    <a class="dropdown-item proj-filter-item" data-id="open">Open/Close</a>
+                </div>
+            </span>
+        </form>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-4 proj-inputs">
+        <form class="input-group" method="get" id="searchform" action=".">
+            <input type="text" class="form-control form-control-sm" placeholder="Search by ID/Name" id="searchbox" name="searchbox">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary btn-sm" id="searchbutton">Submit</button>
+            </span>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12" id="table-results">
+        <div class="card w-100 mb-4">
+            <table class="table table-hover">
+                <thead class="thead-default">
+                    <tr>
+                        <th id="proj-view-id-col">ID </th>
+                        <th> Project Name <span id="proj-sort-icon" class="fa fa-caret-down"></span> </th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    {% for project in projects %}
+                    <tr class='clickable-row' data-href='{% url 'projdetails' project.projectid %}'>
+                        <td> {{ project.projectid }} </td>
+                        <td> {{ project.projname }} </td>
+                    </tr>
+                    {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block 'javascript' %}
+
+<script type="text/javascript" src="{% static 'ProjectSurveillance/js/projectview.js' %}"></script>
+
+{% endblock %}

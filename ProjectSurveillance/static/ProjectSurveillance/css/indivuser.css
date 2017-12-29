@@ -1,0 +1,63 @@
+﻿.info > .card > .card-body
+{
+    padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+}
+
+.info > .card > .card-body > .row 
+{
+    padding: 0.3rem 0rem;
+}
+
+#edit-icon-1, #edit-icon-2, #edit-icon-3, #save-icon-1, #save-icon-2, #save-icon-3
+{
+    float: right;
+}
+
+#save-icon-1, #save-icon-2, #save-icon-3
+{
+    padding-right: 0.7rem;
+}
+
+.icons:hover
+{
+    -webkit-filter: invert(0.5);
+    filter: invert(0.5);
+    transition: all 0.3s;
+}
+
+.form-control-plaintext
+{
+    width: 100%;
+}
+
+.edit-forms > .row
+{
+    margin-bottom: 0;
+}
+
+@media (min-width: 576px) 
+{
+    .edit-forms > .row:first-child
+    {
+        padding-bottom: 10px;
+    }
+}
+
+/* remove margin on the bottom of the header (located in base.html) */
+.header-row {
+    margin-bottom: 0px !important;
+}
+
+.fa-td {
+    text-align: center;
+}
+
+.user-assoc-checkbox {
+    text-align: center;
+}
+
+#drive-table {
+    overflow-y: auto;
+    max-height: 500px;
+    min-height: 49px;
+}

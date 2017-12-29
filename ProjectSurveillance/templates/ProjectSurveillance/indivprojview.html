@@ -1,0 +1,66 @@
+{% extends 'ProjectSurveillance/base.html' %}
+{% load staticfiles %}
+
+{% block 'extra_css' %}
+    <link rel="stylesheet" href="{% static 'ProjectSurveillance/css/indivproj.css' %}" />
+{% endblock %}
+
+{% block 'javascript' %}
+    <script type="text/javascript" src="{% static 'ProjectSurveillance/js/indivprojview.js' %}"></script>
+{% endblock %}
+
+{% block 'nav_project' %} active {% endblock %}
+
+{% block content %}
+<div class="row" id="indiv-header">
+    <div class="col-xs-6 col-sm-8 col-md-9 header-row-1">
+        <span id="indiv-header-title"> <b>{{ project.projname }}</b></span>
+        <div id="database-id"> DATABASE ID: {{ project.projectid }}</div>
+    </div>
+    <div class="col-xs-6 col-sm-4 col-md-3 header-row-1">
+        {% if project.archive %}
+        <button type="button" class="btn btn-sm indiv-buttons" id="archive"> <div class="notification-color-closed" id="archive-color"> </div> <b> CLOSED </b> </button>
+        {% else %}
+        <button type="button" class="btn btn-sm indiv-buttons" id="archive"> <div class="notification-color-open" id="archive-color"> </div> <b> OPEN </b> </button>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <button type="button" class="btn btn-sm indiv-buttons"> <span class="fa fa-trash"></span></button>
+        {% endif %}
+    </div>
+    <div class="row" id="header-row-2-container">
+        <div class="header-row-2">
+            <div class="header-row-2-tab header-row-2-tab-active" id="desc">
+                DESCRIPTION
+            </div>
+        </div>
+        <div class="header-row-2">
+            <div class="header-row-2-tab" id="users">
+                USERS
+            </div>
+        </div>
+        <div class="header-row-2">
+            <div class="header-row-2-tab" id="activity">
+                ACTIVITY
+            </div>
+        </div>
+        <div class="header-row-2">
+            <div class="header-row-2-tab" id="requests">
+                REQUESTS
+            </div>
+        </div>
+        <div class="header-row-2">
+            <div class="header-row-2-tab" id="documents">
+                DOCUMENTS
+            </div>
+        </div>
+        <div id="bar">
+        </div>
+    </div>
+</div>
+
+<div id="indiv-view-pane">
+    {% include "ProjectSurveillance/indivprojview-description.html" %}
+</div>
+
+
+{% endblock %}

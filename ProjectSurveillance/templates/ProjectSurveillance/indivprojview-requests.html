@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12 info ">
+        <div class="card mb-sm-4 card-border">
+            <div class="card-header"><b>Requests</b>
+                {% if user.is_authenticated %}
+                <div class="float-right">
+                    <span class="icons fa fa-plus"></span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="collapse show" id="request-table">
+                <table class="table">
+                <thead class="thead-default">
+                    <tr>
+                        <th> ID </th>
+                        <th> Name </th>
+                        <th> Open Date </th>
+                        <th> Close Date </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if project.projname == 'CJD Surveillance in Recipients of Human Growth Hormone from NIH - WESTAT' %}
+                    <tr>
+                        <td> 1073 </td>
+                        <td> Death Certificate Request: CJD Surveillance in Recipients of Human Growth Hormone from NIH </td>
+                        <td> 09/09/2014 </td>
+                        <td> 09/15/2014 </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
