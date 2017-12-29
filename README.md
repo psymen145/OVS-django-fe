@@ -28,4 +28,4 @@ Also, there are tabs that show other information for that individual project
 
 ## License
 
-The source code is released under the [MIT License](https://github.com/sibtc/django-beginners-guide/blob/master/LICENSE).
+The source code is released under the [MIT License](https://github.com/psymen145/OVS-django-fe/blob/master/LICENSE).
