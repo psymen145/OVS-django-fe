@@ -2,6 +2,8 @@
 
 An intranet site for OVS Data Use unit. This is used to manage projects/data requests for the data use officer. This is currently in development and awaiting news for production environment.
 
+Currently implemented with a legacy SQL Server 
+
 ## Dependencies
 
 ## Preview
