@@ -8,4 +8,20 @@ An intranet site for OVS Data Use unit. This is used to manage projects/data req
 
 The front end is broken up into different sections. The dashboard is the homepage, where the data use officer can drag and drop different projects into different phases. This was implemented with jQuery UI. The calender is a work in progress but it will allow the user to filter the projects displayed in the dashboard. Note: this dashboard is different for each user group. Only those that are logged in will see the dashboard.
 
-![Dashboard Screenshot](https://github.com/psymen145/OVS-django-fe/dashboard.jpg)
+![Dashboard Screenshot](https://github.com/psymen145/OVS-django-fe/blob/master/dashboard.JPG)
+
+The projects tab will show all projects that ever existed. 
+
+![Project Screenshot]()
+
+There are several filtering options and sorting options. The sorting options are located next to each column. The filter options are in the middle. You change what you want to filter by. The dropdown menu will change based on what you want to filter by.
+
+![Filter Change Screenshot]()
+
+Each row in the project table can be clicked anywhere on the row. This will bring you to a view that displays information specific to that project.
+
+![Individual Project Screenshot]()
+
+If the user is logged on and has the correct privileges, he/she can edit the individual project information in this screen. Notice the pencil icons next to boxes. This will change the html to inputs that allows changes to the form. Ajax calls will be made and subsequently make changes in the backend.
+
+Also, there are tabs that show other information for that individual project
