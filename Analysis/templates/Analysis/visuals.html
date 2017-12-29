@@ -1,0 +1,17 @@
+{% extends "ProjectSurveillance/base.html" %}
+
+{% block 'extra_css' %}
+<link href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.2.min.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block 'nav_analysis' %} active {% endblock %}
+
+{% block content %}
+    <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.2.min.js"></script>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ div | safe }}
+            {{ script | safe }}
+        </div>
+    </div>
+{% endblock %}

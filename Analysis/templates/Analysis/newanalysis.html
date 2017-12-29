@@ -1,0 +1,20 @@
+{% extends "ProjectSurveillance/base.html" %}
+
+{% block 'nav_analysis' %} active {% endblock %}
+{% block 'new_ana' %} active-submenu {% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <div class="col-xs-12" style="margin:0 0 5px 0;">
+                    {{ field.label_tag }}
+                </div>
+                <div class="col-xs-12" style="margin:0 0 5px 0;">
+                    {{ field }}
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "ProjectSurveillance/base.html" %}
+
+{% block 'nav_analysis' %} active {% endblock %}
+{% block 'inspect_ana' %} active-submenu {% endblock %}
+
+{% block content %}
+    <div class="col-xs-12">
+        <div class="card">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-default">
+                    <tr>
+                        <th>ID</th>
+                        <th>Pull Date</th>
+                        <th>Name</th>
+                        <th>Query Entered</th>
+                        <th>Type of Query</th>
+                        <th>Source</th>
+                        <th>Pulled By</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for proj in analysisproj %}
+                    <tr class='clickable-row' data-href='/analysis/inspect/{{proj.pullid}}'>
+                        <td> {{ proj.pullid }} </td>
+                        <td> {{ proj.pulldate }} </td>
+                        <td> {{ proj.pullname }} </td>
+                        <td> {{ proj.pullquery }} </td>
+                        <td> {{ proj.pulltype }} </td>
+                        <td> {{ proj.pullsource }} </td>
+                        <td> {{ proj.pullby }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

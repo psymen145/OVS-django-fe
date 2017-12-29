@@ -1,0 +1,18 @@
+{% extends "ProjectSurveillance/base.html" %}
+
+{% block 'nav_analysis' %} active {% endblock %}
+{% block 'inspect_ana' %} active-submenu {% endblock %}
+
+{% block content %}
+
+    <div class="col-xs-12">
+        <div class="card">
+            <div class="card-body">
+                <b>Date of pull:</b> {{ ana_project.pulldate }} <br /> <br />
+                <b>Query:</b> {{ ana_project.pullquery }} <br /> <br />
+                <b>Number of articles:</b> {{numarticles}}
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
